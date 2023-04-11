@@ -36,9 +36,9 @@ double** generate_random_matrix(int size)
 	return matrix;
 }
 
-void func_over_matrix(double** matrix, int size) 
+void func_over_matrix(double** matrix, const int size) 
 {
-    vector<double> row_means;
+    vector<double> row_means(size);
 	for (int i = 0; i < size; i++)
 	{
 		double sum_of_row = 0;
@@ -46,7 +46,7 @@ void func_over_matrix(double** matrix, int size)
 		{
 			sum_of_row += matrix[i][j];
 		}
-		row_means.push_back(sum_of_row/size);
+		row_means[i] = sum_of_row / size;
 	}
 
 	for (int i = 0; i < size; i++)
@@ -58,7 +58,7 @@ void func_over_matrix(double** matrix, int size)
 	}
 }
 
-void func_over_matrix_mp(double** matrix, int size) 
+void func_over_matrix_mp(double** matrix, const int size)
 {
     vector<double> row_means(size);
 
@@ -70,7 +70,7 @@ void func_over_matrix_mp(double** matrix, int size)
 		{
 			sum_of_row += matrix[i][j];
 		}
-		row_means[i] = sum_of_row;
+		row_means[i] = sum_of_row / size;
 	}
 
 #pragma omp parallel for
@@ -96,5 +96,5 @@ int main()
 	cout << "default time: " << default_time.count() << "ms\n";
 	cout << "mp time: " << mp_time.count() << "ms\n";
 	cout << "default - mp: " << default_time.count() - mp_time.count() << "ms\n";
-	cout << "default / mp: " << default_time.count() / mp_time.count();
+	cout << "default / mp: " << (double)default_time.count() / mp_time.count();
 }
